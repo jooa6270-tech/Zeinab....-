@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>A Cinematic Night for Zeinab 🌙❤️</title>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,700;1,400&family=Cairo:wght@600;800;900&family=Great+Vibes&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Cairo', sans-serif;
+      user-select: none;
+    }
+
+    body {
+      background: #020208;
+      color: #fff;
+      min-height: 100vh;
+      overflow: hidden;
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* خلفية النجوم المتحركة */
+    canvas#spaceCanvas {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    /* القمر السينمائي المضيء */
+    .cinematic-moon {
+      position: absolute;
+      top: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 110px;
+      height: 110px;
+      background: radial-gradient(circle at 35% 35%, #ffffff 0%, #fef08a 50%, #eab308 100%);
+      border-radius: 50%;
+      box-shadow: 
+        0 0 50px rgba(254, 240, 138, 0.8),
+        0 0 100px rgba(234, 179, 8, 0.4),
+        0 0 180px rgba(255, 255, 255, 0.2);
+      z-index: 2;
+      animation: moonPulse 4s infinite alternate ease-in-out;
+    }
+
+    @keyframes moonPulse {
+      0% { transform: translateX(-50%) scale(0.98); box-shadow: 0 0 40px rgba(254, 240, 138, 0.7); }
+      100% { transform: translateX(-50%) scale(1.03); box-shadow: 0 0 70px rgba(254, 240, 138, 0.95), 0 0 120px rgba(244, 63, 94, 0.3); }
+    }
+
+    /* شاشة الباسورد */
+    #pass-screen {
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(circle at center, #090d16 0%, #020208 100%);
+      z-index: 1000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .glass-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      padding: 40px 30px;
+      border-radius: 28px;
+      backdrop-filter: blur(20px);
+      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8);
+      max-width: 400px;
+      width: 100%;
+      text-align: center;
+    }
+
+    .glass-card h2 {
+      font-family: 'Amiri', serif;
+      font-size: 1.8rem;
+      margin-bottom: 10px;
+      color: #f8fafc;
+    }
+
+    .glass-card p {
+      font-size: 0.9rem;
+      color: #94a3b8;
+      margin-bottom: 25px;
+    }
+
+    .glass-card input {
+      width: 100%;
+      padding: 14px 18px;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: rgba(0, 0, 0, 0.6);
+      color: #fff;
+      text-align: center;
+      font-size: 1.2rem;
+      letter-spacing: 3px;
+      outline: none;
+      margin-bottom: 20px;
+    }
+
+    .glass-card input:focus {
+      border-color: #f43f5e;
+      box-shadow: 0 0 20px rgba(244, 63, 94, 0.5);
+    }
+
+    .glass-card button {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #e11d48, #f43f5e);
+      color: #fff;
+      font-weight: 800;
+      font-size: 1.1rem;
+      cursor: pointer;
+      box-shadow: 0 10px 25px rgba(225, 29, 72, 0.5);
+    }
+
+    /* المحتوى الرئيسي */
+    .main-container {
+      position: relative;
+      z-index: 10;
+      max-width: 440px;
+      width: 90%;
+      background: rgba(10, 15, 30, 0.65);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 45px 30px;
+      border-radius: 30px;
+      backdrop-filter: blur(25px);
+      text-align: center;
+      box-shadow: 0 30px 80px rgba(0,0,0,0.9);
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      gap: 25px;
+      margin-top: 50px;
+    }
+
+    .main-title {
+      font-family: 'Amiri', serif;
+      font-size: 2rem;
+      font-weight: 700;
+      color: #ffffff;
+      line-height: 1.6;
+    }
+
+    .sub-title {
+      color: #fb7185;
+      font-size: 1.3rem;
+      font-weight: 800;
+      margin-top: -10px;
+    }
+
+    .btn-group {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      width: 100%;
+    }
+
+    .btn {
+      padding: 16px 24px;
+      border-radius: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      font-size: 1.1rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .btn-danger {
+      background: linear-gradient(135deg, rgba(225, 29, 72, 0.4), rgba(159, 18, 57, 0.6));
+      color: #fff;
+      border-color: rgba(244, 63, 94, 0.6);
+      box-shadow: 0 8px 25px rgba(225, 29, 72, 0.3);
+    }
+
+    .btn-danger:hover {
+      transform: scale(1.03);
+      box-shadow: 0 12px 35px rgba(225, 29, 72, 0.6);
+    }
+
+    .btn-hearts {
+      background: linear-gradient(135deg, rgba(168, 85, 247, 0.4), rgba(109, 40, 217, 0.6));
+      color: #fff;
+      border-color: rgba(192, 132, 252, 0.6);
+      box-shadow: 0 8px 25px rgba(168, 85, 247, 0.3);
+    }
+
+    .btn-hearts:hover {
+      transform: scale(1.03);
+      box-shadow: 0 12px 35px rgba(168, 85, 247, 0.6);
+    }
+
+    /* ظهور الصورة والاسم في الجنب بعد الزلزال */
+    .zeinab-side-reveal {
+      position: fixed;
+      top: 25px;
+      right: 25px;
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid rgba(244, 63, 94, 0.4);
+      padding: 12px 18px;
+      border-radius: 20px;
+      backdrop-filter: blur(15px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+      z-index: 100;
+      pointer-events: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      opacity: 0;
+      transform: scale(0.4) translateX(60px);
+      transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .zeinab-side-reveal.active {
+      transform: scale(1) translateX(0);
+      opacity: 1;
+    }
+
+    .zeinab-side-reveal img {
+      width: 75px;
+      height: 75px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid #f43f5e;
+      box-shadow: 0 0 15px rgba(244, 63, 94, 0.6);
+    }
+
+    .zeinab-side-reveal .name-box {
+      font-family: 'Great Vibes', cursive;
+      font-size: 2rem;
+      color: #ffffff;
+      text-shadow: 0 0 10px #ef4444, 0 0 20px #dc2626;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      white-space: nowrap;
+    }
+
+    .zeinab-side-reveal .red-heart {
+      color: #ef4444;
+      font-size: 0.8em;
+      filter: drop-shadow(0 0 12px #dc2626);
+      animation: sideHeartBeat 1.2s infinite alternate ease-in-out;
+    }
+
+    @keyframes sideHeartBeat {
+      0% { transform: scale(1); }
+      100% { transform: scale(1.25) rotate(8deg); }
+    }
+
+    /* اهتزاز الشاشة أثناء الزلزال */
+    @keyframes megaEarthquake {
+      0% { transform: translate(0, 0) rotate(0deg); }
+      10% { transform: translate(-20px, 15px) rotate(-3deg); }
+      20% { transform: translate(20px, -15px) rotate(3deg); }
+      30% { transform: translate(-15px, -20px) rotate(-2deg); }
+      40% { transform: translate(15px, 20px) rotate(2deg); }
+      50% { transform: translate(-25px, 10px) rotate(-4deg); }
+      60% { transform: translate(25px, -10px) rotate(4deg); }
+      100% { transform: translate(0, 0) rotate(0deg); }
+    }
+
+    .shaking-world {
+      animation: megaEarthquake 0.06s infinite !important;
+    }
+
+    /* تأثير القلوب النيون المضيئة */
+    .neon-heart {
+      position: fixed;
+      pointer-events: none;
+      z-index: 50;
+      font-size: 28px;
+      filter: drop-shadow(0 0 12px currentColor);
+      animation: neonFly 3.8s ease-out forwards;
+    }
+
+    @keyframes neonFly {
+      0% {
+        transform: translateY(100vh) scale(0.3) rotate(0deg);
+        opacity: 0;
+      }
+      20% { opacity: 1; }
+      100% {
+        transform: translateY(-120vh) scale(1.4) rotate(360deg);
+        opacity: 0;
+      }
+    }
+
+    /* حقوق الصنع */
+    .footer-credits {
+      position: fixed;
+      bottom: 15px;
+      right: 20px;
+      font-size: 1rem;
+      color: rgba(255, 255, 255, 0.4);
+      font-family: 'Great Vibes', cursive;
+      letter-spacing: 1px;
+      z-index: 100;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- خلفية النجوم -->
+  <canvas id="spaceCanvas"></canvas>
+
+  <!-- القمر المضيء -->
+  <div class="cinematic-moon"></div>
+
+  <!-- صندوق الصورة والاسم في الجنب الأيمن العلوي بعد الزلزال -->
+  <div class="zeinab-side-reveal" id="zeinabReveal">
+    <img src="https://files.catbox.moe/c4om4f.jpg" alt="Zeinab">
+    <div class="name-box">
+      Zeinab <span class="red-heart">❤️</span>
+    </div>
+  </div>
+
+  <!-- شاشة كلمة السر -->
+  <div id="pass-screen">
+    <div class="glass-card">
+      <h2>مساحة خاصة جداً 🔒</h2>
+      <p>أدخلي كلمة السر للدخول عالمك</p>
+      <input type="text" id="passInput" placeholder="14/12/2008">
+      <button onclick="checkPassword()">دخول الصفحة ✨</button>
+    </div>
+  </div>
+
+  <!-- المحتوى الرئيسي -->
+  <div class="main-container" id="mainContent">
+    <div class="main-title">
+      هبهرك يوم عيد ميلادك بجد..
+    </div>
+    <div class="sub-title">
+      وهتتفاجئي! 😉🔥
+    </div>
+
+    <div class="btn-group">
+      <button class="btn btn-danger" onclick="triggerEarthquake()">
+        💥 دوسي هنا
+      </button>
+      <button class="btn btn-hearts" onclick="spawnNeonHearts()">
+        ✨ شلال القلوب ❤️
+      </button>
+    </div>
+  </div>
+
+  <!-- حقوق الصنع -->
+  <div class="footer-credits">Made by Ahmed</div>
+
+  <!-- الأغنية المرفوعة عبر الرابط -->
+  <audio id="bgMusic" loop preload="auto">
+    <source src="https://files.catbox.moe/uylngh.mp3" type="audio/mpeg">
+  </audio>
+
+  <script>
+    // 1. خلفية النجوم المتحركة
+    const canvas = document.getElementById('spaceCanvas');
+    const ctx = canvas.getContext('2d');
+    let stars = [];
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    for (let i = 0; i < 180; i++) {
+      stars.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        radius: Math.random() * 1.5,
+        alpha: Math.random(),
+        speed: Math.random() * 0.02 + 0.005
+      });
+    }
+
+    function animateSpace() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      stars.forEach(star => {
+        star.alpha += star.speed;
+        if (star.alpha > 1 || star.alpha < 0) star.speed = -star.speed;
+        ctx.beginPath();
+        ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255, 255, 255, ${Math.abs(star.alpha)})`;
+        ctx.shadowBlur = 8;
+        ctx.shadowColor = "#ffffff";
+        ctx.fill();
+      });
+      requestAnimationFrame(animateSpace);
+    }
+    animateSpace();
+
+    // 2. التحقق من الباسورد والتشغيل
+    const CORRECT_PASS = "14/12/2008";
+
+    function checkPassword() {
+      const input = document.getElementById("passInput").value.trim();
+      if (input === CORRECT_PASS) {
+        document.getElementById("pass-screen").style.display = "none";
+        document.getElementById("mainContent").style.display = "flex";
+        
+        const music = document.getElementById("bgMusic");
+        music.play().catch(e => console.log("خطأ في تشغيل الصوت:", e));
+      } else {
+        alert("الباسورد مش صح! اكتبيه كدة: 14/12/2008 😉");
+      }
+    }
+
+    // 3. الزلزال وظهور الصورة والاسم في الجنب
+    function triggerEarthquake() {
+      const body = document.body;
+      const reveal = document.getElementById("zeinabReveal");
+
+      body.classList.add("shaking-world");
+      reveal.classList.add("active");
+
+      spawnNeonHearts();
+
+      setTimeout(() => {
+        body.classList.remove("shaking-world");
+      }, 1500);
+    }
+
+    // 4. مطر القلوب المضيئة
+    function spawnNeonHearts() {
+      const colors = ['#f43f5e', '#ec4899', '#d946ef', '#a855f7', '#6366f1', '#ef4444'];
+      const symbols = ['❤️', '💖', '💘', '💝', '✨'];
+
+      for (let i = 0; i < 35; i++) {
+        setTimeout(() => {
+          const heart = document.createElement("div");
+          heart.classList.add("neon-heart");
+          heart.innerText = symbols[Math.floor(Math.random() * symbols.length)];
+          heart.style.left = Math.random() * 100 + "vw";
+          heart.style.color = colors[Math.floor(Math.random() * colors.length)];
+          heart.style.fontSize = (Math.random() * 22 + 18) + "px";
+
+          document.body.appendChild(heart);
+          setTimeout(() => heart.remove(), 4000);
+        }, i * 65);
+      }
+    }
+  </script>
+</body>
+</html>
